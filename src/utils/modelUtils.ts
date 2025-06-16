@@ -1,5 +1,58 @@
 import { diseaseInfo } from '../data/diseaseInfo';
 
+// Disease name mapping from internal class names to display names
+export const diseaseNameMapping: { [key: string]: string } = {
+  'Apple___Apple_scab': 'Apple : Scab',
+  'Apple___Black_rot': 'Apple : Black Rot',
+  'Apple___Cedar_apple_rust': 'Apple : Cedar Rust',
+  'Apple___healthy': 'Apple : Healthy',
+  'Background_without_leaves': 'Background Without Leaves',
+  'Blueberry___healthy': 'Blueberry : Healthy',
+  'Cherry___Powdery_mildew': 'Cherry : Powdery Mildew',
+  'Cherry___healthy': 'Cherry : Healthy',
+  'Corn___Cercospora_leaf_spot Gray_leaf_spot': 'Corn : Cercospora Leaf Spot | Gray Leaf Spot',
+  'Corn___Common_rust': 'Corn : Common Rust',
+  'Corn___Northern_Leaf_Blight': 'Corn : Northern Leaf Blight',
+  'Corn___healthy': 'Corn : Healthy',
+  'Grape___Black_rot': 'Grape : Black Rot',
+  'Grape___Esca_(Black_Measles)': 'Grape : Esca | Black Measles',
+  'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)': 'Grape : Leaf Blight | Isariopsis Leaf Spot',
+  'Grape___healthy': 'Grape : Healthy',
+  'Orange___Haunglongbing_(Citrus_greening)': 'Orange : Haunglongbing | Citrus Greening',
+  'Peach___Bacterial_spot': 'Peach : Bacterial Spot',
+  'Peach___healthy': 'Peach : Healthy',
+  'Pepper,_bell___Bacterial_spot': 'Pepper bell : Bacterial Spot',
+  'Pepper,_bell___healthy': 'Pepper bell : Healthy',
+  'Potato___Early_blight': 'Potato : Early Blight',
+  'Potato___Late_blight': 'Potato : Late Blight',
+  'Potato___healthy': 'Potato : Healthy',
+  'Raspberry___healthy': 'Raspberry : Healthy',
+  'Soybean___healthy': 'Soybean : Healthy',
+  'Squash___Powdery_mildew': 'Squash : Powdery Mildew',
+  'Strawberry___Leaf_scorch': 'Strawberry : Leaf Scorch',
+  'Strawberry___healthy': 'Strawberry : Healthy',
+  'Tomato___Bacterial_spot': 'Tomato : Bacterial Spot',
+  'Tomato___Early_blight': 'Tomato : Early Blight',
+  'Tomato___Late_blight': 'Tomato : Late Blight',
+  'Tomato___Leaf_Mold': 'Tomato : Leaf Mold',
+  'Tomato___Septoria_leaf_spot': 'Tomato : Septoria Leaf Spot',
+  'Tomato___Spider_mites Two-spotted_spider_mite': 'Tomato : Spider Mites | Two-Spotted Spider Mite',
+  'Tomato___Target_Spot': 'Tomato : Target Spot',
+  'Tomato___Tomato_Yellow_Leaf_Curl_Virus': 'Tomato : Yellow Leaf Curl Virus',
+  'Tomato___Tomato_mosaic_virus': 'Tomato : Mosaic Virus',
+  'Tomato___healthy': 'Tomato : Healthy'
+};
+
+// Utility function to get original disease name from formatted name
+export const getOriginalDiseaseName = (formattedName: string): string | null => {
+  for (const [originalName, displayName] of Object.entries(diseaseNameMapping)) {
+    if (displayName === formattedName) {
+      return originalName;
+    }
+  }
+  return null;
+};
+
 // CNN Model Architecture matching the exact PyTorch implementation
 class CNNModel {
   private diseaseClasses = [
@@ -16,50 +69,7 @@ class CNNModel {
   ];
 
   private formatDiseaseName(className: string): string {
-    // Convert class name to display format matching your actual model output
-    const mapping: { [key: string]: string } = {
-      'Apple___Apple_scab': 'Apple : Scab',
-      'Apple___Black_rot': 'Apple : Black Rot',
-      'Apple___Cedar_apple_rust': 'Apple : Cedar Rust',
-      'Apple___healthy': 'Apple : Healthy',
-      'Background_without_leaves': 'Background Without Leaves',
-      'Blueberry___healthy': 'Blueberry : Healthy',
-      'Cherry___Powdery_mildew': 'Cherry : Powdery Mildew',
-      'Cherry___healthy': 'Cherry : Healthy',
-      'Corn___Cercospora_leaf_spot Gray_leaf_spot': 'Corn : Cercospora Leaf Spot | Gray Leaf Spot',
-      'Corn___Common_rust': 'Corn : Common Rust',
-      'Corn___Northern_Leaf_Blight': 'Corn : Northern Leaf Blight',
-      'Corn___healthy': 'Corn : Healthy',
-      'Grape___Black_rot': 'Grape : Black Rot',
-      'Grape___Esca_(Black_Measles)': 'Grape : Esca | Black Measles',
-      'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)': 'Grape : Leaf Blight | Isariopsis Leaf Spot',
-      'Grape___healthy': 'Grape : Healthy',
-      'Orange___Haunglongbing_(Citrus_greening)': 'Orange : Haunglongbing | Citrus Greening',
-      'Peach___Bacterial_spot': 'Peach : Bacterial Spot',
-      'Peach___healthy': 'Peach : Healthy',
-      'Pepper,_bell___Bacterial_spot': 'Pepper bell : Bacterial Spot',
-      'Pepper,_bell___healthy': 'Pepper bell : Healthy',
-      'Potato___Early_blight': 'Potato : Early Blight',
-      'Potato___Late_blight': 'Potato : Late Blight',
-      'Potato___healthy': 'Potato : Healthy',
-      'Raspberry___healthy': 'Raspberry : Healthy',
-      'Soybean___healthy': 'Soybean : Healthy',
-      'Squash___Powdery_mildew': 'Squash : Powdery Mildew',
-      'Strawberry___Leaf_scorch': 'Strawberry : Leaf Scorch',
-      'Strawberry___healthy': 'Strawberry : Healthy',
-      'Tomato___Bacterial_spot': 'Tomato : Bacterial Spot',
-      'Tomato___Early_blight': 'Tomato : Early Blight',
-      'Tomato___Late_blight': 'Tomato : Late Blight',
-      'Tomato___Leaf_Mold': 'Tomato : Leaf Mold',
-      'Tomato___Septoria_leaf_spot': 'Tomato : Septoria Leaf Spot',
-      'Tomato___Spider_mites Two-spotted_spider_mite': 'Tomato : Spider Mites | Two-Spotted Spider Mite',
-      'Tomato___Target_Spot': 'Tomato : Target Spot',
-      'Tomato___Tomato_Yellow_Leaf_Curl_Virus': 'Tomato : Yellow Leaf Curl Virus',
-      'Tomato___Tomato_mosaic_virus': 'Tomato : Mosaic Virus',
-      'Tomato___healthy': 'Tomato : Healthy'
-    };
-    
-    return mapping[className] || className;
+    return diseaseNameMapping[className] || className;
   }
 
   private simulateCNNPrediction(imageFile: File): { classIndex: number; confidence: number } {

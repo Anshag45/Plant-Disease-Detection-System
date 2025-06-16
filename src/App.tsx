@@ -9,7 +9,7 @@ import TreatmentRecommendations from './components/TreatmentRecommendations';
 import StatisticsSection from './components/StatisticsSection';
 import { diseaseInfo } from './data/diseaseInfo';
 import { supplementInfo } from './data/supplementInfo';
-import { predictDisease } from './utils/modelUtils';
+import { predictDisease, getOriginalDiseaseName } from './utils/modelUtils';
 
 interface PredictionResult {
   disease: string;
@@ -50,11 +50,18 @@ function App() {
     try {
       const result = await predictDisease(imageFile);
       
-      // Find supplement information for the predicted disease
-      const supplement = supplementInfo.find(s => 
-        s.disease_name.toLowerCase().includes(result.disease.toLowerCase()) ||
-        result.disease.toLowerCase().includes(s.disease_name.toLowerCase())
-      );
+      // Get the original disease name for supplement matching
+      const originalDiseaseName = getOriginalDiseaseName(result.disease);
+      
+      // Find supplement information using the original disease name
+      const supplement = supplementInfo.find(s => {
+        if (originalDiseaseName) {
+          return s.disease_name.toLowerCase().includes(originalDiseaseName.toLowerCase()) ||
+                 originalDiseaseName.toLowerCase().includes(s.disease_name.toLowerCase());
+        }
+        return s.disease_name.toLowerCase().includes(result.disease.toLowerCase()) ||
+               result.disease.toLowerCase().includes(s.disease_name.toLowerCase());
+      });
 
       const enhancedResult = {
         ...result,
@@ -72,7 +79,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setPrediction, setError, setIsLoading, setActiveTab]);
 
   const handleReset = useCallback(() => {
     setSelectedImage(null);
