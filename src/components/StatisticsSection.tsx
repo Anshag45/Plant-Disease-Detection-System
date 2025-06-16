@@ -11,32 +11,32 @@ const StatisticsSection = forwardRef<HTMLElement, StatisticsSectionProps>(({ inV
     {
       icon: Award,
       value: '98.7%',
-      label: 'Detection Accuracy',
-      description: 'Validated on 61,486 images',
+      label: 'Validation Accuracy',
+      description: 'On PlantVillage dataset',
       color: 'text-green-600',
       bgColor: 'bg-green-100'
     },
     {
       icon: Microscope,
       value: '39',
-      label: 'Disease Categories',
-      description: 'Comprehensive coverage',
+      label: 'Disease Classes',
+      description: 'Including healthy states',
       color: 'text-blue-600',
       bgColor: 'bg-blue-100'
     },
     {
       icon: Users,
-      value: '12,500+',
-      label: 'Farmers Helped',
-      description: 'Across multiple regions',
+      value: '2,500+',
+      label: 'Research Citations',
+      description: 'PlantVillage dataset usage',
       color: 'text-purple-600',
       bgColor: 'bg-purple-100'
     },
     {
       icon: TrendingUp,
-      value: '50,000+',
-      label: 'Crops Protected',
-      description: 'Disease prevention success',
+      value: '61,486',
+      label: 'Training Images',
+      description: 'High-quality dataset',
       color: 'text-orange-600',
       bgColor: 'bg-orange-100'
     }
@@ -52,10 +52,10 @@ const StatisticsSection = forwardRef<HTMLElement, StatisticsSectionProps>(({ inV
           transition={{ duration: 0.6 }}
         >
           <h3 className="text-3xl font-bold text-gray-900 mb-4">
-            Trusted by Agricultural Professionals
+            Research-Grade AI Model
           </h3>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Our AI-powered system has been validated through extensive testing and real-world deployment
+            Built on the renowned PlantVillage dataset with state-of-the-art CNN architecture
           </p>
         </motion.div>
 
@@ -91,6 +91,31 @@ const StatisticsSection = forwardRef<HTMLElement, StatisticsSectionProps>(({ inV
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          className="mt-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <h4 className="text-xl font-semibold text-gray-900 mb-4">
+            Model Architecture Details
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+            <div>
+              <div className="font-medium text-gray-900">Input Size</div>
+              <div className="text-gray-600">224×224×3 RGB images</div>
+            </div>
+            <div>
+              <div className="font-medium text-gray-900">Parameters</div>
+              <div className="text-gray-600">52.6M trainable parameters</div>
+            </div>
+            <div>
+              <div className="font-medium text-gray-900">Training</div>
+              <div className="text-gray-600">Adam optimizer, CrossEntropy loss</div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

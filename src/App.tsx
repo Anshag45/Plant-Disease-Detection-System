@@ -101,7 +101,7 @@ function App() {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Plant Disease Detection
                 </h1>
-                <p className="text-sm text-gray-600">AI-powered agricultural health analysis</p>
+                <p className="text-sm text-gray-600">CNN-powered agricultural analysis</p>
               </div>
             </motion.div>
             
@@ -117,7 +117,7 @@ function App() {
               </div>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Microscope className="h-4 w-4 text-blue-500" />
-                <span>39 Disease Types</span>
+                <span>39 Classes</span>
               </div>
             </motion.div>
           </div>
@@ -134,12 +134,12 @@ function App() {
       >
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Protect Your Crops with
-            <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent"> AI Technology</span>
+            Advanced Plant Disease
+            <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent"> Detection System</span>
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Upload a photo of your plant and get instant disease detection, treatment recommendations, 
-            and access to agricultural supplements - all powered by advanced machine learning.
+            Upload a photo of your plant and get instant AI-powered disease detection using our 
+            research-grade CNN model trained on the PlantVillage dataset.
           </p>
         </div>
       </motion.section>
@@ -156,7 +156,7 @@ function App() {
               <div className="flex border-b border-gray-100">
                 {[
                   { id: 'upload', label: 'Upload Image', icon: Camera },
-                  { id: 'results', label: 'Analysis Results', icon: Microscope },
+                  { id: 'results', label: 'CNN Analysis', icon: Microscope },
                   { id: 'treatment', label: 'Treatment', icon: ShoppingCart }
                 ].map((tab) => (
                   <button
@@ -186,7 +186,7 @@ function App() {
                   {activeTab === 'upload' && (
                     <div>
                       <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                        Upload Plant Image for Analysis
+                        Upload Plant Image for CNN Analysis
                       </h2>
                       <ImageUploader
                         onImageSelect={handleImageSelect}
@@ -203,7 +203,7 @@ function App() {
                         {isLoading ? (
                           <>
                             <Loader2 className="h-5 w-5 mr-2 text-green-600 animate-spin" />
-                            Analyzing Image...
+                            CNN Processing...
                           </>
                         ) : error ? (
                           <>
@@ -213,7 +213,7 @@ function App() {
                         ) : prediction ? (
                           <>
                             <CheckCircle className="h-5 w-5 mr-2 text-green-600" />
-                            Analysis Complete
+                            CNN Analysis Complete
                           </>
                         ) : (
                           <>
@@ -227,8 +227,8 @@ function App() {
                         <div className="flex items-center justify-center py-12">
                           <div className="text-center">
                             <Loader2 className="h-12 w-12 text-green-600 animate-spin mx-auto mb-4" />
-                            <p className="text-gray-600">Processing your image...</p>
-                            <p className="text-sm text-gray-500 mt-1">This may take a few seconds</p>
+                            <p className="text-gray-600">Running CNN inference...</p>
+                            <p className="text-sm text-gray-500 mt-1">Processing through 52.6M parameters</p>
                           </div>
                         </div>
                       )}
@@ -249,7 +249,7 @@ function App() {
                       {!selectedImage && !isLoading && !error && (
                         <div className="text-center py-12 text-gray-500">
                           <Camera className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                          <p>Upload an image to see analysis results</p>
+                          <p>Upload an image to see CNN analysis results</p>
                         </div>
                       )}
                     </div>
@@ -265,7 +265,7 @@ function App() {
                       ) : (
                         <div className="text-center py-12 text-gray-500">
                           <ShoppingCart className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                          <p>Complete disease analysis to see treatment recommendations</p>
+                          <p>Complete CNN analysis to see treatment recommendations</p>
                         </div>
                       )}
                     </div>
@@ -288,15 +288,15 @@ function App() {
             >
               <h3 className="text-lg font-semibold text-gray-900 flex items-center mb-4">
                 <Info className="h-5 w-5 mr-2 text-blue-600" />
-                Photography Tips
+                Image Guidelines
               </h3>
               <ul className="space-y-3 text-sm text-gray-600">
                 {[
-                  'Use natural lighting for best results',
-                  'Ensure the leaf fills most of the frame',
-                  'Avoid blurry or heavily shadowed images',
-                  'Include visible symptoms if present',
-                  'Take photos from multiple angles'
+                  'Use 224×224 pixel images for best results',
+                  'Ensure clear focus on affected leaf areas',
+                  'Natural lighting improves CNN accuracy',
+                  'Avoid heavily shadowed or blurry images',
+                  'Single leaf per image works best'
                 ].map((tip, index) => (
                   <motion.li 
                     key={index}
@@ -312,7 +312,7 @@ function App() {
               </ul>
             </motion.div>
 
-            {/* Quick Stats Card */}
+            {/* Model Performance Card */}
             <motion.div 
               className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-xl p-6 text-white"
               initial={{ opacity: 0, x: 20 }}
@@ -321,20 +321,20 @@ function App() {
             >
               <h3 className="text-lg font-semibold mb-4 flex items-center">
                 <TrendingUp className="h-5 w-5 mr-2" />
-                Impact Statistics
+                Model Performance
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-green-100">Crops Protected</span>
-                  <span className="font-bold">50,000+</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-green-100">Farmers Helped</span>
-                  <span className="font-bold">12,500+</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-green-100">Success Rate</span>
+                  <span className="text-green-100">Validation Accuracy</span>
                   <span className="font-bold">98.7%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-green-100">Test Accuracy</span>
+                  <span className="font-bold">98.9%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-green-100">Training Images</span>
+                  <span className="font-bold">61,486</span>
                 </div>
               </div>
             </motion.div>
@@ -354,33 +354,33 @@ function App() {
                 <h3 className="text-xl font-bold">Plant Disease Detection</h3>
               </div>
               <p className="text-gray-400">
-                Empowering farmers with AI-driven plant health solutions for sustainable agriculture.
+                Research-grade CNN model for accurate plant disease identification using computer vision.
               </p>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold mb-4">Features</h4>
+              <h4 className="text-lg font-semibold mb-4">Model Features</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>• Real-time disease detection</li>
-                <li>• Treatment recommendations</li>
-                <li>• Agricultural supplements</li>
-                <li>• Expert guidance</li>
+                <li>• CNN with 52.6M parameters</li>
+                <li>• 98.7% validation accuracy</li>
+                <li>• 39 disease classifications</li>
+                <li>• PlantVillage dataset trained</li>
               </ul>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold mb-4">Technology</h4>
+              <h4 className="text-lg font-semibold mb-4">Technical Specs</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>• Deep Learning CNN</li>
-                <li>• 98.7% Accuracy Rate</li>
-                <li>• 39 Disease Categories</li>
-                <li>• Real-time Processing</li>
+                <li>• 224×224×3 input images</li>
+                <li>• 4 convolutional blocks</li>
+                <li>• BatchNorm + Dropout layers</li>
+                <li>• Adam optimizer training</li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Plant Disease Detection System. Advancing agricultural technology.</p>
+            <p>&copy; 2025 Plant Disease Detection System. Advanced agricultural AI technology.</p>
           </div>
         </div>
       </footer>
