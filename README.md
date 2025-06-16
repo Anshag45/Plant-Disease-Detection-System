@@ -12,7 +12,7 @@ An advanced AI-powered plant disease detection system built with a custom Convol
 
 ## 🚀 Live Demo
 
-**[Try the Application](https://clinquant-basbousa-67202c.netlify.app)**
+**[Try the Application](https://advanced-plant-disease-detector.netlify.app/)**
 
 Upload a plant image and get instant AI-powered disease detection with treatment recommendations!
 
