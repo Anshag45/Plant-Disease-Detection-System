@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle, Info, Leaf } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { AlertTriangle, CheckCircle, Info, Leaf, TrendingUp, Clock } from 'lucide-react';
 
 interface PredictionResultProps {
   prediction: {
@@ -7,6 +8,11 @@ interface PredictionResultProps {
     confidence: number;
     description: string;
     treatment: string;
+    supplement?: {
+      name: string;
+      image: string;
+      buyLink: string;
+    };
   };
 }
 
@@ -18,12 +24,20 @@ const PredictionResult: React.FC<PredictionResultProps> = ({ prediction }) => {
   const confidenceBgColor = prediction.confidence > 0.8 ? 'bg-green-100' : 
                            prediction.confidence > 0.6 ? 'bg-yellow-100' : 'bg-red-100';
 
+  const severityLevel = prediction.confidence > 0.8 ? 'High Confidence' :
+                       prediction.confidence > 0.6 ? 'Medium Confidence' : 'Low Confidence';
+
   return (
     <div className="space-y-6">
-      {/* Main Result */}
-      <div className={`p-6 rounded-xl border-2 ${
-        isHealthy ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'
-      }`}>
+      {/* Main Result Card */}
+      <motion.div 
+        className={`p-6 rounded-xl border-2 ${
+          isHealthy ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'
+        }`}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center">
             {isHealthy ? (
@@ -35,68 +49,155 @@ const PredictionResult: React.FC<PredictionResultProps> = ({ prediction }) => {
               <h3 className="text-xl font-semibold text-gray-900">
                 {prediction.disease}
               </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                {isHealthy ? 'Plant appears healthy' : 'Disease detected'}
+              <p className="text-sm text-gray-600 mt-1 flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                {isHealthy ? 'Plant appears healthy' : 'Disease detected - immediate attention recommended'}
               </p>
             </div>
           </div>
           
-          <div className={`px-3 py-1 rounded-full ${confidenceBgColor}`}>
-            <span className={`text-sm font-medium ${confidenceColor}`}>
-              {Math.round(prediction.confidence * 100)}% confident
-            </span>
+          <div className="text-right">
+            <div className={`px-3 py-1 rounded-full ${confidenceBgColor} mb-2`}>
+              <span className={`text-sm font-medium ${confidenceColor}`}>
+                {Math.round(prediction.confidence * 100)}% confident
+              </span>
+            </div>
+            <div className="text-xs text-gray-500">
+              {severityLevel}
+            </div>
           </div>
         </div>
         
-        {/* Confidence Bar */}
+        {/* Enhanced Confidence Visualization */}
         <div className="mb-4">
-          <div className="flex justify-between text-sm text-gray-600 mb-1">
+          <div className="flex justify-between text-sm text-gray-600 mb-2">
             <span>Confidence Level</span>
             <span>{Math.round(prediction.confidence * 100)}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className={`h-2 rounded-full transition-all duration-500 ${
-                prediction.confidence > 0.8 ? 'bg-green-500' :
-                prediction.confidence > 0.6 ? 'bg-yellow-500' : 'bg-red-500'
+          <div className="w-full bg-gray-200 rounded-full h-3 relative overflow-hidden">
+            <motion.div
+              className={`h-3 rounded-full transition-all duration-1000 ${
+                prediction.confidence > 0.8 ? 'bg-gradient-to-r from-green-400 to-green-600' :
+                prediction.confidence > 0.6 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : 
+                'bg-gradient-to-r from-red-400 to-red-600'
               }`}
-              style={{ width: `${prediction.confidence * 100}%` }}
-            ></div>
+              initial={{ width: 0 }}
+              animate={{ width: `${prediction.confidence * 100}%` }}
+              transition={{ duration: 1, delay: 0.5 }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
           </div>
         </div>
-      </div>
 
-      {/* Description */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+        {/* Risk Assessment */}
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="text-center">
+            <div className={`text-lg font-bold ${
+              isHealthy ? 'text-green-600' : prediction.confidence > 0.7 ? 'text-red-600' : 'text-yellow-600'
+            }`}>
+              {isHealthy ? 'Low' : prediction.confidence > 0.7 ? 'High' : 'Medium'}
+            </div>
+            <div className="text-xs text-gray-500">Risk Level</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold text-blue-600">
+              {isHealthy ? 'None' : prediction.confidence > 0.8 ? 'Immediate' : 'Monitor'}
+            </div>
+            <div className="text-xs text-gray-500">Action Required</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold text-purple-600">
+              {isHealthy ? 'Excellent' : prediction.confidence > 0.7 ? 'Poor' : 'Fair'}
+            </div>
+            <div className="text-xs text-gray-500">Plant Health</div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Detailed Description */}
+      <motion.div 
+        className="bg-blue-50 border border-blue-200 rounded-xl p-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
         <h4 className="text-lg font-semibold text-gray-900 flex items-center mb-3">
           <Info className="h-5 w-5 text-blue-600 mr-2" />
-          Description
+          Detailed Analysis
         </h4>
         <p className="text-gray-700 leading-relaxed">
           {prediction.description}
         </p>
-      </div>
+      </motion.div>
 
-      {/* Treatment */}
+      {/* Quick Treatment Preview */}
       {!isHealthy && (
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+        <motion.div 
+          className="bg-purple-50 border border-purple-200 rounded-xl p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <h4 className="text-lg font-semibold text-gray-900 flex items-center mb-3">
             <Leaf className="h-5 w-5 text-purple-600 mr-2" />
-            Recommended Treatment
+            Treatment Overview
           </h4>
-          <p className="text-gray-700 leading-relaxed">
-            {prediction.treatment}
+          <p className="text-gray-700 leading-relaxed line-clamp-3">
+            {prediction.treatment.split('.')[0]}.
           </p>
-        </div>
+          <div className="mt-3">
+            <span className="text-sm text-purple-600 font-medium">
+              View complete treatment plan in the Treatment tab →
+            </span>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Supplement Preview */}
+      {prediction.supplement && !isHealthy && (
+        <motion.div 
+          className="bg-green-50 border border-green-200 rounded-xl p-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <img
+                src={prediction.supplement.image}
+                alt={prediction.supplement.name}
+                className="w-12 h-12 object-cover rounded-lg border border-gray-200 mr-3"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=100&h=100&fit=crop&crop=center';
+                }}
+              />
+              <div>
+                <h5 className="font-medium text-gray-900 text-sm">
+                  Recommended Treatment Product
+                </h5>
+                <p className="text-xs text-gray-600">
+                  {prediction.supplement.name}
+                </p>
+              </div>
+            </div>
+            <TrendingUp className="h-4 w-4 text-green-600" />
+          </div>
+        </motion.div>
       )}
 
       {/* Disclaimer */}
-      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+      <motion.div 
+        className="bg-gray-50 border border-gray-200 rounded-xl p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
         <p className="text-xs text-gray-600 text-center">
-          <strong>Disclaimer:</strong> This is an AI-based prediction and should not replace professional agricultural advice. 
-          For serious plant health issues, please consult with a qualified plant pathologist or agricultural expert.
+          <strong>Disclaimer:</strong> This AI-based analysis should complement, not replace, professional agricultural advice. 
+          For critical plant health issues, consult with qualified agricultural experts or plant pathologists.
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };
