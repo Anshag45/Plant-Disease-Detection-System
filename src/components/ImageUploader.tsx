@@ -75,7 +75,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="relative rounded-xl overflow-hidden bg-gray-100 shadow-lg">
+        <div className="relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 shadow-lg transition-colors duration-300">
           <img
             src={selectedImage}
             alt="Selected plant"
@@ -110,18 +110,18 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         <motion.button
           onClick={onReset}
           disabled={isLoading}
-          className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-200 disabled:opacity-50"
+          className="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 rounded-full shadow-lg transition-all duration-200 disabled:opacity-50"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <X className="h-4 w-4 text-gray-600" />
+          <X className="h-4 w-4 text-gray-600 dark:text-gray-300" />
         </motion.button>
         
         <div className="mt-4 flex justify-center">
           <motion.button
             onClick={onReset}
             disabled={isLoading}
-            className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50 flex items-center"
+            className="px-6 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 disabled:opacity-50 flex items-center"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -137,8 +137,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     <motion.div
       className={`upload-area rounded-xl p-8 text-center transition-all duration-300 border-2 border-dashed ${
         isDragOver 
-          ? 'border-green-400 bg-green-50 scale-105' 
-          : 'border-gray-300 bg-gray-50 hover:border-green-300 hover:bg-green-50'
+          ? 'border-green-400 bg-green-50 dark:bg-green-900/20 scale-105' 
+          : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20'
       }`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -157,18 +157,18 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       
       <div className="space-y-6">
         <motion.div 
-          className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center"
+          className="mx-auto w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center transition-colors duration-300"
           animate={isDragOver ? { scale: 1.1 } : { scale: 1 }}
           transition={{ duration: 0.2 }}
         >
-          <ImageIcon className="h-10 w-10 text-green-600" />
+          <ImageIcon className="h-10 w-10 text-green-600 dark:text-green-400" />
         </motion.div>
         
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
             Upload Plant Image for Analysis
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6 transition-colors duration-300">
             Drag and drop your plant image here, or click to browse your files
           </p>
         </div>
@@ -183,10 +183,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           </label>
           
           <div className="text-center">
-            <p className="text-sm text-gray-500">or</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">or</p>
             <button
               type="button"
-              className="mt-2 inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              className="mt-2 inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
               onClick={() => document.getElementById('file-upload')?.click()}
             >
               <Camera className="h-4 w-4 mr-2" />
@@ -195,11 +195,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
         </div>
         
-        <div className="border-t border-gray-200 pt-4">
-          <p className="text-xs text-gray-500">
+        <div className="border-t border-gray-200 dark:border-gray-600 pt-4 transition-colors duration-300">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Supports JPG, PNG, WebP • Maximum file size: 10MB
           </p>
-          <div className="flex justify-center space-x-4 mt-2 text-xs text-gray-400">
+          <div className="flex justify-center space-x-4 mt-2 text-xs text-gray-400 dark:text-gray-500">
             <span>• High resolution recommended</span>
             <span>• Clear lighting preferred</span>
             <span>• Focus on affected areas</span>
@@ -216,7 +216,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <motion.div
                 className="bg-green-500 h-2 rounded-full"
                 initial={{ width: 0 }}
@@ -224,7 +224,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
                 transition={{ duration: 0.1 }}
               />
             </div>
-            <p className="text-sm text-gray-600 mt-2">Uploading... {uploadProgress}%</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Uploading... {uploadProgress}%</p>
           </motion.div>
         )}
       </AnimatePresence>

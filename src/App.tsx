@@ -7,6 +7,8 @@ import PredictionResult from './components/PredictionResult';
 import ModelInfo from './components/ModelInfo';
 import TreatmentRecommendations from './components/TreatmentRecommendations';
 import StatisticsSection from './components/StatisticsSection';
+import DarkModeToggle from './components/DarkModeToggle';
+import { useDarkMode } from './hooks/useDarkMode';
 import { diseaseInfo } from './data/diseaseInfo';
 import { supplementInfo } from './data/supplementInfo';
 import { predictDisease, getOriginalDiseaseName } from './utils/modelUtils';
@@ -24,6 +26,7 @@ interface PredictionResult {
 }
 
 function App() {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [prediction, setPrediction] = useState<PredictionResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -90,9 +93,9 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       {/* Enhanced Header */}
-      <header className="bg-white/90 backdrop-blur-md border-b border-green-100 sticky top-0 z-50 shadow-sm">
+      <header className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-green-100 dark:border-gray-700 sticky top-0 z-50 shadow-sm transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <motion.div 
@@ -108,25 +111,29 @@ function App() {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   Plant Disease Detection
                 </h1>
-                <p className="text-sm text-gray-600">CNN-powered agricultural analysis</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">CNN-powered agricultural analysis</p>
               </div>
             </motion.div>
             
-            <motion.div 
-              className="hidden sm:flex items-center space-x-6"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Award className="h-4 w-4 text-green-500" />
-                <span>98.7% Accuracy</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Microscope className="h-4 w-4 text-blue-500" />
-                <span>39 Classes</span>
-              </div>
-            </motion.div>
+            <div className="flex items-center space-x-4">
+              <motion.div 
+                className="hidden sm:flex items-center space-x-6"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                  <Award className="h-4 w-4 text-green-500" />
+                  <span>98.7% Accuracy</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                  <Microscope className="h-4 w-4 text-blue-500" />
+                  <span>39 Classes</span>
+                </div>
+              </motion.div>
+              
+              <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            </div>
           </div>
         </div>
       </header>
@@ -140,11 +147,11 @@ function App() {
         transition={{ duration: 0.8 }}
       >
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
             Advanced Plant Disease
             <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent"> Detection System</span>
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto transition-colors duration-300">
             Upload a photo of your plant and get instant AI-powered disease detection using our 
             research-grade CNN model trained on the PlantVillage dataset.
           </p>
@@ -159,8 +166,8 @@ function App() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Tab Navigation */}
-            <div className="bg-white rounded-2xl shadow-xl border border-green-100 overflow-hidden">
-              <div className="flex border-b border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+              <div className="flex border-b border-gray-100 dark:border-gray-700">
                 {[
                   { id: 'upload', label: 'Upload Image', icon: Camera },
                   { id: 'results', label: 'CNN Analysis', icon: Microscope },
@@ -171,8 +178,8 @@ function App() {
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`flex-1 flex items-center justify-center px-6 py-4 text-sm font-medium transition-all duration-200 ${
                       activeTab === tab.id
-                        ? 'bg-green-50 text-green-700 border-b-2 border-green-500'
-                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                        ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border-b-2 border-green-500'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
                     }`}
                   >
                     <tab.icon className="h-4 w-4 mr-2" />
@@ -192,7 +199,7 @@ function App() {
                 >
                   {activeTab === 'upload' && (
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
                         Upload Plant Image for CNN Analysis
                       </h2>
                       <ImageUploader
@@ -206,7 +213,7 @@ function App() {
 
                   {activeTab === 'results' && (
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center transition-colors duration-300">
                         {isLoading ? (
                           <>
                             <Loader2 className="h-5 w-5 mr-2 text-green-600 animate-spin" />
@@ -234,17 +241,17 @@ function App() {
                         <div className="flex items-center justify-center py-12">
                           <div className="text-center">
                             <Loader2 className="h-12 w-12 text-green-600 animate-spin mx-auto mb-4" />
-                            <p className="text-gray-600">Running CNN inference...</p>
-                            <p className="text-sm text-gray-500 mt-1">Processing through 52.6M parameters</p>
+                            <p className="text-gray-600 dark:text-gray-400">Running CNN inference...</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Processing through 52.6M parameters</p>
                           </div>
                         </div>
                       )}
 
                       {error && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                           <div className="flex items-center">
                             <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                            <p className="text-red-800">{error}</p>
+                            <p className="text-red-800 dark:text-red-400">{error}</p>
                           </div>
                         </div>
                       )}
@@ -254,8 +261,8 @@ function App() {
                       )}
 
                       {!selectedImage && !isLoading && !error && (
-                        <div className="text-center py-12 text-gray-500">
-                          <Camera className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                          <Camera className="h-12 w-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
                           <p>Upload an image to see CNN analysis results</p>
                         </div>
                       )}
@@ -264,14 +271,14 @@ function App() {
 
                   {activeTab === 'treatment' && (
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
                         Treatment Recommendations
                       </h2>
                       {prediction ? (
                         <TreatmentRecommendations prediction={prediction} />
                       ) : (
-                        <div className="text-center py-12 text-gray-500">
-                          <ShoppingCart className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                          <ShoppingCart className="h-12 w-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
                           <p>Complete CNN analysis to see treatment recommendations</p>
                         </div>
                       )}
@@ -288,16 +295,16 @@ function App() {
             
             {/* Enhanced Tips Card */}
             <motion.div 
-              className="bg-white rounded-2xl shadow-xl border border-green-100 p-6"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 p-6 transition-colors duration-300"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center mb-4 transition-colors duration-300">
                 <Info className="h-5 w-5 mr-2 text-blue-600" />
                 Image Guidelines
               </h3>
-              <ul className="space-y-3 text-sm text-gray-600">
+              <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
                 {[
                   'Use 224×224 pixel images for best results',
                   'Ensure clear focus on affected leaf areas',
@@ -321,7 +328,7 @@ function App() {
 
             {/* Model Performance Card */}
             <motion.div 
-              className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-xl p-6 text-white"
+              className="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl shadow-xl p-6 text-white transition-colors duration-300"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
@@ -350,7 +357,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 mt-16">
+      <footer className="bg-gray-900 dark:bg-black text-white py-12 mt-16 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
